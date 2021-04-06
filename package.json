@@ -1,0 +1,11 @@
+{
+  "name": "react17-hexgrid",
+  "version": "1.0.0",
+  "description": "Render hexmaps as svg in React. Based off of react-hexgrid.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
