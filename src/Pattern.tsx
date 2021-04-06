@@ -8,7 +8,7 @@ export type PatternProps = {
 };
 
 export const Pattern = (props: PatternProps) => {
-  const { id, size = new Point(10, 10), link } = props;
+  const { id, size = { x: 10, y: 10 }, link } = props;
   return (
     <defs>
       <pattern

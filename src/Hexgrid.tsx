@@ -1,12 +1,12 @@
-import React from "react"
+import React, { ReactNode } from "react";
 
 type HexgridProps = {
-  children?: React.ReactNode
-  className?: string
-  viewBox?: string
-  width?: string | number
-  height?: string | number
-}
+  children?: ReactNode;
+  className?: string;
+  viewBox?: string;
+  width?: string | number;
+  height?: string | number;
+};
 
 export const Hexgrid = (props: HexgridProps) => {
   const {
@@ -14,10 +14,11 @@ export const Hexgrid = (props: HexgridProps) => {
     viewBox = "-50 -50 100 100",
     width = 800,
     height = 600,
-  } = props
+  } = props;
   return (
     <svg
       className="grid"
+      data-testid="Hexgrid"
       width={width}
       height={height}
       viewBox={viewBox}
@@ -26,5 +27,5 @@ export const Hexgrid = (props: HexgridProps) => {
     >
       {children}
     </svg>
-  )
-}
+  );
+};

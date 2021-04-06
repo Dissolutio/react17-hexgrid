@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 export type TextProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
   x?: string | number;
   y?: string | number;

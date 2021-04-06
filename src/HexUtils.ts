@@ -1,31 +1,31 @@
-import { HexgridLayout } from "./HexgridLayout";
+import { HexgridCtxLayout } from "./HexgridLayout";
 import { Hex, Point, HexOrientation } from "./models";
 
 const DIRECTIONS = [
   // +q -s
-  new Hex(1, 0, -1),
+  { q: 1, r: 0, s: -1 },
   // +q -r
-  new Hex(1, -1, 0),
+  { q: 1, r: -1, s: 0 },
   // +s -r
-  new Hex(0, -1, 1),
+  { q: 0, r: -1, s: 1 },
   // +s -q
-  new Hex(-1, 0, 1),
+  { q: -1, r: 0, s: 1 },
   // +r -q
-  new Hex(-1, 1, 0),
+  { q: -1, r: 1, s: 0 },
   // +r -s
-  new Hex(0, 1, -1),
+  { q: 0, r: 1, s: -1 },
 ];
 function equals(a: Hex, b: Hex) {
   return a.q === b.q && a.r === b.r && a.s === b.s;
 }
 function add(a: Hex, b: Hex) {
-  return new Hex(a.q + b.q, a.r + b.r, a.s + b.s);
+  return { q: a.q + b.q, r: a.r + b.r, s: a.s + b.s };
 }
 function subtract(a: Hex, b: Hex) {
-  return new Hex(a.q - b.q, a.r - b.r, a.s - b.s);
+  return { q: a.q - b.q, r: a.r - b.r, s: a.s - b.s };
 }
 function multiply(a: Hex, k: number) {
-  return new Hex(a.q * k, a.r * k, a.s * k);
+  return { q: a.q * k, r: a.r * k, s: a.s * k };
 }
 function lengths(hex: Hex) {
   return (Math.abs(hex.q) + Math.abs(hex.r) + Math.abs(hex.s)) / 2;
@@ -39,7 +39,7 @@ function direction(direction: number) {
 function neighbor(hex: Hex, direction: number) {
   return HexUtils.add(hex, HexUtils.direction(direction));
 }
-function neighbors(hex: Hex) {
+function neighbors(hex: Hex): Hex[] {
   return DIRECTIONS.map((direction, directionIndex) =>
     neighbor(hex, directionIndex)
   );
@@ -57,7 +57,7 @@ const round = (hex: Hex) => {
   else if (rDiff > sDiff) rr = -rq - rs;
   else rs = -rq - rr;
 
-  return new Hex(rq, rr, rs);
+  return { q: rq, r: rr, s: rs };
 };
 const hexToPixel = (
   hex: Hex,
@@ -75,28 +75,28 @@ const hexToPixel = (
   // Apply spacing
   x = x * s;
   y = y * s;
-  return new Point(x + layout.origin.x, y + layout.origin.y);
+  return { x: x + layout.origin.x, y: y + layout.origin.y };
 };
-const pixelToHex = (point: Point, layout: HexgridLayout) => {
+const pixelToHex = (point: Point, layout: HexgridCtxLayout) => {
   const M = layout.orientation;
-  const pt = new Point(
-    (point.x - layout.origin.x) / layout.size.x,
-    (point.y - layout.origin.y) / layout.size.y
-  );
+  const pt = {
+    x: (point.x - layout.origin.x) / layout.size.x,
+    y: (point.y - layout.origin.y) / layout.size.y,
+  };
   const q = M.b0 * pt.x + M.b1 * pt.y;
   const r = M.b2 * pt.x + M.b3 * pt.y;
-  const hex = new Hex(q, r, -q - r);
+  const hex = { q, r, s: -q - r };
   return HexUtils.round(hex);
 };
 const lerp = (a: number, b: number, t: number) => {
   return a + (b - a) * t;
 };
 const hexLerp = (a: Hex, b: Hex, t: number) => {
-  return new Hex(
-    HexUtils.lerp(a.q, b.q, t),
-    HexUtils.lerp(a.r, b.r, t),
-    HexUtils.lerp(a.s, b.s, t)
-  );
+  return {
+    q: HexUtils.lerp(a.q, b.q, t),
+    r: HexUtils.lerp(a.r, b.r, t),
+    s: HexUtils.lerp(a.s, b.s, t),
+  };
 };
 const getID = (hex: Hex) => {
   return `${hex.q},${hex.r},${hex.s}`;
@@ -119,14 +119,3 @@ export const HexUtils = {
   hexLerp,
   getID,
 };
-
-// {
-
-//   DIRECTIONS: Hex[];
-//   equals: (a: Hex, b: Hex) => boolean;
-//     add: (a: Hex, b: Hex) => Hex;
-//     subtract: (a: Hex, b: Hex) => Hex;
-//     multiply: (a: Hex, k: number) => Hex;
-//     lengths: (hex: Hex) => number;
-//     distance: (a: Hex, b: Hex) => number;
-// }

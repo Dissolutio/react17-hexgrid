@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, ReactNode, createContext } from "react";
 import {
   HexOrientation,
   Point,
@@ -7,7 +7,7 @@ import {
 } from "./models";
 // is parent of provider
 export type HexgridLayoutProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
   flat?: boolean;
   origin?: Point;
@@ -16,20 +16,20 @@ export type HexgridLayoutProps = {
 };
 // the provider converts flat into orientation into points
 export type HexgridLayoutProviderProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   flat: boolean;
   origin: Point;
   size: Point;
   spacing: number;
 };
-export type HexgridLayout = {
+export type HexgridCtxLayout = {
   orientation: HexOrientation;
   origin: Point;
   size: Point;
   spacing: number;
 };
 export type HexgridLayoutCtxValue = {
-  layout: HexgridLayout;
+  layout: HexgridCtxLayout;
   points: string;
 };
 export const HexgridLayout = (props: HexgridLayoutProps) => {
@@ -48,12 +48,14 @@ export const HexgridLayout = (props: HexgridLayoutProps) => {
       size={size}
       spacing={spacing}
     >
-      <g className={className}>{children}</g>
+      <g className={className} data-testid="HexgridLayout">
+        {children}
+      </g>
     </HexgridLayoutProvider>
   );
 };
 
-const HexgridLayoutContext = React.createContext<
+export const HexgridLayoutContext = createContext<
   HexgridLayoutCtxValue | undefined
 >(undefined);
 
@@ -70,7 +72,7 @@ export function HexgridLayoutProvider(props: HexgridLayoutProviderProps) {
   }
   function calculateCoordinates(orientation: HexOrientation) {
     const center = { x: 0, y: 0 };
-    const blankCorners = Array.from({ length: 3 }, () => new Point());
+    const blankCorners = Array.from({ length: 6 }, () => ({ x: 0, y: 0 }));
     const corners = blankCorners.map((corner, cornerIndex) => {
       const offset = getPointOffset(cornerIndex, orientation, size);
       const nextCorner = { x: center.x + offset.x, y: center.y + offset.y };
@@ -98,7 +100,7 @@ export function HexgridLayoutProvider(props: HexgridLayoutProviderProps) {
 }
 
 export function useHexgridLayoutContext() {
-  const context = React.useContext(HexgridLayoutContext);
+  const context = useContext(HexgridLayoutContext);
   if (context === undefined) {
     throw new Error(
       "useHexgridLayoutContext must be used within a HexgridLayoutProvider"

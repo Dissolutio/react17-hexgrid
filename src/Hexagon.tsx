@@ -1,19 +1,19 @@
-import React from "react";
+import React, { ReactNode, SyntheticEvent } from "react";
 import { useHexgridLayoutContext } from "./HexgridLayout";
 import { Hex } from "./models";
 import { HexUtils } from "./HexUtils";
 
 export type HexagonProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   hex: Hex;
   fill?: string;
   cellStyle?: {};
   className?: string;
   data?: {};
-  onMouseEnter?: (e: React.SyntheticEvent, hex: Hex) => void;
-  onMouseOver?: (e: React.SyntheticEvent, hex: Hex) => void;
-  onMouseLeave?: (e: React.SyntheticEvent, hex: Hex) => void;
-  onClick?: (e: React.SyntheticEvent, hex: Hex) => void;
+  onMouseEnter?: (e: SyntheticEvent, hex: Hex) => void;
+  onMouseOver?: (e: SyntheticEvent, hex: Hex) => void;
+  onMouseLeave?: (e: SyntheticEvent, hex: Hex) => void;
+  onClick?: (e: SyntheticEvent, hex: Hex) => void;
 };
 
 export const Hexagon = (props: HexagonProps) => {
