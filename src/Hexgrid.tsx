@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
 type HexgridProps = {
-  children?: ReactNode;
+  children?: React.ReactNode;
   className?: string;
   viewBox?: string;
   width?: string | number;

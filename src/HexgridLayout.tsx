@@ -1,4 +1,4 @@
-import React, { useContext, ReactNode, createContext } from "react";
+import React from "react";
 import {
   HexOrientation,
   Point,
@@ -7,7 +7,7 @@ import {
 } from "./models";
 // is parent of provider
 export type HexgridLayoutProps = {
-  children?: ReactNode;
+  children?: React.ReactNode;
   className?: string;
   flat?: boolean;
   origin?: Point;
@@ -16,7 +16,7 @@ export type HexgridLayoutProps = {
 };
 // the provider converts flat into orientation into points
 export type HexgridLayoutProviderProps = {
-  children?: ReactNode;
+  children?: React.ReactNode;
   flat: boolean;
   origin: Point;
   size: Point;
@@ -55,7 +55,7 @@ export const HexgridLayout = (props: HexgridLayoutProps) => {
   );
 };
 
-export const HexgridLayoutContext = createContext<
+export const HexgridLayoutContext = React.createContext<
   HexgridLayoutCtxValue | undefined
 >(undefined);
 
@@ -100,10 +100,10 @@ export function HexgridLayoutProvider(props: HexgridLayoutProviderProps) {
 }
 
 export function useHexgridLayoutContext() {
-  const context = useContext(HexgridLayoutContext);
+  const context = React.useContext(HexgridLayoutContext);
   if (context === undefined) {
     throw new Error(
-      "useHexgridLayoutContext must be used within a HexgridLayoutProvider"
+      "Components of react17-hexgrid such as Hexagon,Path,Text,Pattern, must all be rendered as children of a Hexgrid and HexgridLayout. The useHexgridLayoutContext hook must be used within a HexgridLayoutProvider."
     );
   }
   return context;
