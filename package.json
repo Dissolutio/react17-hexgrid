@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "scripts": {
-    "build": "npx rollup -c",
+    "build": "npx rollup -c && npm run fixreact",
+    "fixreact": "sed -i 's+react+../../../bgio/battlescape/node_modules/react+' ./dist/index.esm.js",
     "test": "jest"
   },
   "author": "",
