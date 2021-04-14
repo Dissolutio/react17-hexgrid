@@ -40,6 +40,7 @@ export const Hexagon = (props: HexagonProps) => {
       onMouseOver={onMouseOver ? (e) => onMouseOver(e, hex) : undefined}
       onMouseLeave={onMouseLeave ? (e) => onMouseLeave(e, hex) : undefined}
       onClick={onClick ? (e) => onClick(e, hex) : undefined}
+      data-testid="Hexagon"
     >
       <g className="hexagon">
         <polygon points={points} fill={fillId} style={cellStyle} />

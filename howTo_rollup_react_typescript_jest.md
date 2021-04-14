@@ -202,3 +202,32 @@ export default [
   },
 ];
 ```
+
+## develop library locally - React hooks error
+
+The usual way to use the lib in a project locally, so as to enable simultaneous development, is with `npm link`. If you make a React component with this project, that does NOT use React Hooks? It will work just fine. Make a change to the lib, `npm run build`, pop over to your project and see the live updates (I'm using Create-React-App).
+
+However, if you use hooks, the hooks call on the `...lib/node_modules/react` export of React. Whereas your project is obviously using its own copy. The hook error will tell you, vaguely, that you're doing something wrong. Online help will also reveal that you are indeed using two Reacts, which often ends poorly.
+
+Many solutions found online: edit aliases in webpack config (I'm using C-R-A, would have to eject), npm link the lib's react to the project's react, failed... etc.
+
+This was rough, and I learned a lot, but in the end what worked for me was manually editing (in MyLib that's sym-linked into MyProject) the build output `dist/index.esm.js` file, and changing the import of React:
+
+```js
+// change this
+import React from 'react';
+// to this
+import React from '../../../MyProject/node_modules/react';
+```
+
+I changed the build script in my lib to do this for me:
+
+```js
+// in package.json scripts field
+  "build": "npx rollup -c && npm run fixreact",
+  "fixreact": "sed -i 's+react+../../../bgio/battlescape/node_modules/react+' ./dist/index.esm.js",
+```
+
+I'm on linux so your `sed` command might be different. 
+
+The downside is that you have to change this if you switch projects, too.
