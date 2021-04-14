@@ -1,12 +1,11 @@
 {
   "name": "react17-hexgrid",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Render hexmaps as svg in React. Based off of react-hexgrid.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "scripts": {
-    "build": "npx rollup -c && npm run fixreact",
-    "fixreact": "sed -i 's+react+../../../bgio/battlescape/node_modules/react+' ./dist/index.esm.js",
+    "build": "npx rollup -c",
     "test": "jest"
   },
   "author": "",
